@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Workout Tracking</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        HOW DO GYM?
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="workout.html">Workout</a></li>
+        <li><a href="catalog.html">Catalog</a></li>
+        <li><a href="profile.html">Profile</a></li>
+    </ul>
+
+</nav>
+
+<section class="survey-container">
+
+    <h1>Workout Tracker</h1>
+
+    <!-- Today's Workout -->
+
+    <div class="card">
+
+        <h2>Today's Workout</h2>
+
+        <div id="todayWorkout">
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <!-- Progressive Overload -->
+
+    <div class="card">
+
+        <h2>Progressive Overload Recommendation</h2>
+
+        <p id="recommendation">
+
+            Save an exercise to get your next
+            workout recommendation.
+
+        </p>
+
+    </div>
+
+    <br>
+
+    <!-- Rest Timer -->
+
+    <div class="card">
+
+        <h2>Rest Timer</h2>
+
+        <h1 id="timerDisplay">
+
+            90
+
+        </h1>
+
+        <button
+            class="primary-btn"
+            onclick="startTimer()">
+
+            Start 90s Rest Timer
+
+        </button>
+
+    </div>
+
+    <br>
+
+    <!-- Workout History -->
+
+    <div class="card">
+
+        <h2>Workout History</h2>
+
+        <div id="history">
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+// ====================================
+// LOAD CURRENT PROGRAM
+// ====================================
+
+const currentProgram =
+    JSON.parse(
+        localStorage.getItem(
+            "currentProgram"
+        )
+    ) || [];
+
+
+// ====================================
+// DISPLAY TODAY'S WORKOUT
+// ====================================
+
+let workoutHTML = "";
+
+currentProgram.forEach((day, dayIndex) => {
+
+    workoutHTML += `
+
+    <div class="card">
+
+        <h2>${day.day}</h2>
+
+    `;
+
+    day.exercises.forEach((exercise, exerciseIndex) => {
+
+        const id =
+            dayIndex + "_" + exerciseIndex;
+
+        workoutHTML += `
+
+        <div class="exercise-card">
+
+            <h3>${exercise}</h3>
+
+            <label>
+                Weight Used (lbs)
+            </label>
+
+            <input
+                type="number"
+                id="weight_${id}"
+                placeholder="135">
+
+            <label>
+                Reps Completed
+            </label>
+
+            <input
+                type="number"
+                id="reps_${id}"
+                placeholder="8">
+
+            <button
+                class="primary-btn"
+                onclick="saveExercise(
+                    '${exercise}',
+                    '${id}'
+                )">
+
+                Save Exercise
+
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+    workoutHTML += `
+    </div>
+    `;
+});
+
+document.getElementById(
+    "todayWorkout"
+).innerHTML =
+    workoutHTML;
+
+
+// ====================================
+// SAVE EXERCISE
+// ====================================
+
+function saveExercise(
+    exercise,
+    id
+){
+
+    const weight =
+        Number(
+            document.getElementById(
+                `weight_${id}`
+            ).value
+        );
+
+    const reps =
+        Number(
+            document.getElementById(
+                `reps_${id}`
+            ).value
+        );
+
+    if(!weight || !reps){
+
+        alert(
+            "Please enter both weight and reps."
+        );
+
+        return;
+    }
+
+    const workoutLog = {
+
+        exercise: exercise,
+
+        weight: weight,
+
+        reps: reps,
+
+        date:
+            new Date()
+            .toLocaleDateString()
+
+    };
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "history"
+            )
+        ) || [];
+
+    history.push(
+        workoutLog
+    );
+
+    localStorage.setItem(
+        "history",
+        JSON.stringify(history)
+    );
+
+    generateRecommendation(
+        weight,
+        reps
+    );
+
+    loadHistory();
+
+    document.getElementById(
+        `weight_${id}`
+    ).value = "";
+
+    document.getElementById(
+        `reps_${id}`
+    ).value = "";
+
+    alert(
+        exercise + " saved!"
+    );
+}
+
+
+// ====================================
+// PROGRESSIVE OVERLOAD
+// ====================================
+
+function generateRecommendation(
+    weight,
+    reps
+){
+
+    if(reps >= 8){
+
+        const recommendation =
+            weight + 5;
+
+        document.getElementById(
+            "recommendation"
+        ).innerHTML =
+
+        `
+        ✅ Great work!
+
+        <br><br>
+
+        Recommended next workout:
+
+        <br><br>
+
+        <strong>
+        ${recommendation} lbs
+        </strong>
+
+        <br><br>
+
+        Increase by 5 lbs next session.
+        `;
+    }
+    else{
+
+        document.getElementById(
+            "recommendation"
+        ).innerHTML =
+
+        `
+        Stay at your current weight
+        until all target reps are
+        completed consistently.
+        `;
+    }
+}
+
+
+// ====================================
+// WORKOUT HISTORY
+// ====================================
+
+function loadHistory(){
+
+    const historyDiv =
+        document.getElementById(
+            "history"
+        );
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "history"
+            )
+        ) || [];
+
+    historyDiv.innerHTML = "";
+
+    const latest =
+        [...history].reverse();
+
+    latest.forEach(workout => {
+
+        historyDiv.innerHTML +=
+
+        `
+        <div class="history-card">
+
+            <strong>
+            ${workout.exercise}
+            </strong>
+
+            <br>
+
+            Weight:
+            ${workout.weight} lbs
+
+            <br>
+
+            Reps:
+            ${workout.reps}
+
+            <br>
+
+            Date:
+            ${workout.date}
+
+        </div>
+        `;
+    });
+}
+
+loadHistory();
+
+
+// ====================================
+// REST TIMER
+// ====================================
+
+let timer;
+
+function startTimer(){
+
+    let seconds = 90;
+
+    clearInterval(
+        timer
+    );
+
+    document.getElementById(
+        "timerDisplay"
+    ).innerText = seconds;
+
+    timer = setInterval(() => {
+
+        seconds--;
+
+        document.getElementById(
+            "timerDisplay"
+        ).innerText = seconds;
+
+        if(seconds <= 0){
+
+            clearInterval(
+                timer
+            );
+
+            alert(
+                "Rest Complete! Time for your next set."
+            );
+        }
+
+    },1000);
+}
+
+</script>
+
+</body>
+
+</html>

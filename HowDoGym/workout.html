@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Workout Plan</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">
+        HOW DO GYM?
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="tracking.html">Track Workout</a></li>
+        <li><a href="catalog.html">Catalog</a></li>
+        <li><a href="profile.html">Profile</a></li>
+    </ul>
+</nav>
+
+<section class="survey-container">
+
+    <h1 id="welcome"></h1>
+
+    <div class="card">
+        <h2>Your Personalized Program</h2>
+
+        <p id="programInfo"></p>
+
+        <p id="programSummary"></p>
+    </div>
+
+    <div id="workoutContainer"></div>
+
+    <br>
+
+    <a href="tracking.html" class="btn">
+        Start Today's Workout
+    </a>
+
+</section>
+
+<script>
+
+// =========================================
+// SURVEY DATA
+// =========================================
+
+const name =
+    localStorage.getItem("name") || "Athlete";
+
+const goal =
+    localStorage.getItem("goal");
+
+const days =
+    localStorage.getItem("days");
+
+const equipment =
+    localStorage.getItem("equipment");
+
+const experience =
+    localStorage.getItem("experience");
+
+document.getElementById(
+    "welcome"
+).innerText =
+    `Welcome ${name}!`;
+
+// =========================================
+// WORKOUT GENERATOR
+// =========================================
+
+function generateWorkout(
+    goal,
+    days,
+    equipment
+){
+
+    let workout = [];
+
+    if(goal === "muscle"){
+
+        if(equipment === "fullgym"){
+
+            if(days === "3"){
+
+                workout = [
+
+                    {
+                        day:"Push Day",
+                        exercises:[
+                            "Bench Press 4x8",
+                            "Incline Dumbbell Press 3x10",
+                            "Shoulder Press 3x10",
+                            "Lateral Raise 3x15",
+                            "Tricep Pushdown 3x12"
+                        ]
+                    },
+
+                    {
+                        day:"Pull Day",
+                        exercises:[
+                            "Lat Pulldown 4x10",
+                            "Barbell Row 4x8",
+                            "Cable Row 3x10",
+                            "Face Pull 3x15",
+                            "Hammer Curl 3x12"
+                        ]
+                    },
+
+                    {
+                        day:"Leg Day",
+                        exercises:[
+                            "Squat 4x8",
+                            "Romanian Deadlift 3x10",
+                            "Leg Press 3x12",
+                            "Leg Curl 3x12",
+                            "Calf Raise 3x20"
+                        ]
+                    }
+
+                ];
+            }
+
+            if(days === "4"){
+
+                workout = [
+
+                    {
+                        day:"Upper A",
+                        exercises:[
+                            "Bench Press 4x8",
+                            "Barbell Row 4x8",
+                            "Shoulder Press 3x10",
+                            "Hammer Curl 3x12"
+                        ]
+                    },
+
+                    {
+                        day:"Lower A",
+                        exercises:[
+                            "Squat 4x8",
+                            "Leg Press 3x12",
+                            "Leg Curl 3x12",
+                            "Calf Raise 3x20"
+                        ]
+                    },
+
+                    {
+                        day:"Upper B",
+                        exercises:[
+                            "Incline Press 4x8",
+                            "Lat Pulldown 4x10",
+                            "Lateral Raise 3x15",
+                            "Tricep Pushdown 3x12"
+                        ]
+                    },
+
+                    {
+                        day:"Lower B",
+                        exercises:[
+                            "Romanian Deadlift 4x8",
+                            "Walking Lunges 3x20",
+                            "Leg Curl 3x12"
+                        ]
+                    }
+
+                ];
+            }
+        }
+
+        if(equipment === "dumbbells"){
+
+            workout = [
+
+                {
+                    day:"Upper Body",
+                    exercises:[
+                        "Dumbbell Bench Press 4x10",
+                        "One Arm Row 4x10",
+                        "Arnold Press 3x12",
+                        "Hammer Curl 3x12"
+                    ]
+                },
+
+                {
+                    day:"Lower Body",
+                    exercises:[
+                        "Goblet Squat 4x12",
+                        "Romanian Deadlift 4x12",
+                        "Walking Lunges 3x20"
+                    ]
+                },
+
+                {
+                    day:"Full Body",
+                    exercises:[
+                        "Push Ups 3x15",
+                        "Dumbbell Squat 3x15",
+                        "Shoulder Press 3x12"
+                    ]
+                }
+
+            ];
+        }
+
+        if(equipment === "homegym"){
+
+            workout = [
+
+                {
+                    day:"Full Body A",
+                    exercises:[
+                        "Push Ups 3x20",
+                        "Bodyweight Squat 4x20",
+                        "Plank 3x45 Seconds",
+                        "Resistance Band Row 3x15"
+                    ]
+                },
+
+                {
+                    day:"Full Body B",
+                    exercises:[
+                        "Bulgarian Split Squat 3x12",
+                        "Band Chest Press 4x12",
+                        "Band Pull Apart 3x15"
+                    ]
+                },
+
+                {
+                    day:"Conditioning",
+                    exercises:[
+                        "Jump Rope 10 Minutes",
+                        "Burpees 3x15",
+                        "Mountain Climbers 3x30 Seconds"
+                    ]
+                }
+
+            ];
+        }
+    }
+
+    if(goal === "strength"){
+
+        workout = [
+
+            {
+                day:"Squat Focus",
+                exercises:[
+                    "Back Squat 5x5",
+                    "Leg Press 3x8",
+                    "Leg Curl 3x10"
+                ]
+            },
+
+            {
+                day:"Bench Focus",
+                exercises:[
+                    "Bench Press 5x5",
+                    "Incline Press 3x8",
+                    "Dips 3x10"
+                ]
+            },
+
+            {
+                day:"Deadlift Focus",
+                exercises:[
+                    "Deadlift 5x5",
+                    "Barbell Row 4x6",
+                    "Pull Ups 3x8"
+                ]
+            }
+
+        ];
+    }
+
+    if(goal === "fatloss"){
+
+        workout = [
+
+            {
+                day:"Fat Loss A",
+                exercises:[
+                    "Goblet Squat 3x12",
+                    "Push Ups 3x15",
+                    "Lat Pulldown 3x12",
+                    "20 Minute Cardio"
+                ]
+            },
+
+            {
+                day:"Fat Loss B",
+                exercises:[
+                    "Leg Press 3x15",
+                    "Bench Press 3x12",
+                    "Cable Row 3x12",
+                    "15 Minute Cardio"
+                ]
+            },
+
+            {
+                day:"Conditioning",
+                exercises:[
+                    "Mountain Climbers",
+                    "Jump Rope",
+                    "Walking Lunges",
+                    "20 Minute Cardio"
+                ]
+            }
+
+        ];
+    }
+
+    return workout;
+}
+
+// =========================================
+// CREATE PROGRAM
+// =========================================
+
+const workout =
+    generateWorkout(
+        goal,
+        days,
+        equipment
+    );
+
+localStorage.setItem(
+    "currentProgram",
+    JSON.stringify(workout)
+);
+
+document.getElementById(
+    "programInfo"
+).innerText =
+`${goal.toUpperCase()} | ${days} days/week`;
+
+document.getElementById(
+    "programSummary"
+).innerText =
+`Equipment: ${equipment} | Experience: ${experience}`;
+
+// =========================================
+// DISPLAY PROGRAM
+// =========================================
+
+let html = "";
+
+workout.forEach(day => {
+
+    html += `
+
+    <div class="card">
+
+        <h2>${day.day}</h2>
+
+        <ul>
+
+    `;
+
+    day.exercises.forEach(exercise => {
+
+        html += `
+
+            <li>${exercise}</li>
+
+        `;
+    });
+
+    html += `
+
+        </ul>
+
+    </div>
+
+    `;
+});
+
+document.getElementById(
+    "workoutContainer"
+).innerHTML = html;
+
+</script>
+
+</body>
+</html>

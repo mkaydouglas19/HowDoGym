@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Exercise Catalog</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        HOW DO GYM?
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="workout.html">Workout</a></li>
+        <li><a href="tracking.html">Track</a></li>
+        <li><a href="profile.html">Profile</a></li>
+    </ul>
+
+</nav>
+
+<section class="survey-container">
+
+    <h1>Exercise Catalog</h1>
+
+    <input
+        type="text"
+        id="searchBox"
+        placeholder="Search exercises..."
+        onkeyup="searchExercises()">
+
+    <br><br>
+
+    <div id="exerciseList"></div>
+
+    <br>
+
+    <div id="exerciseDetails"
+         class="card">
+
+        <h2>Select An Exercise</h2>
+
+        <p>
+            Click an exercise to view details.
+        </p>
+
+    </div>
+
+</section>
+
+<script>
+
+const exercises = [
+
+{
+name:"Bench Press",
+muscle:"Chest",
+equipment:"Barbell",
+difficulty:"Beginner",
+instructions:"Lower bar to chest and press upward."
+},
+
+{
+name:"Incline Bench Press",
+muscle:"Chest",
+equipment:"Barbell",
+difficulty:"Intermediate",
+instructions:"Press from an incline bench angle."
+},
+
+{
+name:"Dumbbell Bench Press",
+muscle:"Chest",
+equipment:"Dumbbells",
+difficulty:"Beginner",
+instructions:"Press dumbbells from chest to lockout."
+},
+
+{
+name:"Cable Fly",
+muscle:"Chest",
+equipment:"Cable Machine",
+difficulty:"Beginner",
+instructions:"Bring handles together in front of body."
+},
+
+{
+name:"Push Up",
+muscle:"Chest",
+equipment:"Bodyweight",
+difficulty:"Beginner",
+instructions:"Lower body and push upward."
+},
+
+{
+name:"Lat Pulldown",
+muscle:"Back",
+equipment:"Cable Machine",
+difficulty:"Beginner",
+instructions:"Pull bar to upper chest."
+},
+
+{
+name:"Pull Up",
+muscle:"Back",
+equipment:"Pullup Bar",
+difficulty:"Intermediate",
+instructions:"Pull body until chin passes bar."
+},
+
+{
+name:"Barbell Row",
+muscle:"Back",
+equipment:"Barbell",
+difficulty:"Intermediate",
+instructions:"Row barbell toward waist."
+},
+
+{
+name:"Cable Row",
+muscle:"Back",
+equipment:"Cable Machine",
+difficulty:"Beginner",
+instructions:"Pull handle toward stomach."
+},
+
+{
+name:"Face Pull",
+muscle:"Back",
+equipment:"Cable Machine",
+difficulty:"Beginner",
+instructions:"Pull rope toward face."
+},
+
+{
+name:"Deadlift",
+muscle:"Back",
+equipment:"Barbell",
+difficulty:"Intermediate",
+instructions:"Lift bar from floor to standing."
+},
+
+{
+name:"T-Bar Row",
+muscle:"Back",
+equipment:"T-Bar",
+difficulty:"Intermediate",
+instructions:"Row weight toward torso."
+},
+
+{
+name:"Squat",
+muscle:"Legs",
+equipment:"Barbell",
+difficulty:"Beginner",
+instructions:"Squat until thighs are parallel."
+},
+
+{
+name:"Front Squat",
+muscle:"Legs",
+equipment:"Barbell",
+difficulty:"Intermediate",
+instructions:"Squat with barbell on shoulders."
+},
+
+{
+name:"Leg Press",
+muscle:"Legs",
+equipment:"Machine",
+difficulty:"Beginner",
+instructions:"Press platform away using legs."
+},
+
+{
+name:"Lunge",
+muscle:"Legs",
+equipment:"Bodyweight",
+difficulty:"Beginner",
+instructions:"Step forward and lower body."
+},
+
+{
+name:"Bulgarian Split Squat",
+muscle:"Legs",
+equipment:"Bench",
+difficulty:"Intermediate",
+instructions:"Rear foot elevated squat."
+},
+
+{
+name:"Romanian Deadlift",
+muscle:"Legs",
+equipment:"Barbell",
+difficulty:"Intermediate",
+instructions:"Hip hinge focusing on hamstrings."
+},
+
+{
+name:"Leg Curl",
+muscle:"Legs",
+equipment:"Machine",
+difficulty:"Beginner",
+instructions:"Curl heels toward glutes."
+},
+
+{
+name:"Leg Extension",
+muscle:"Legs",
+equipment:"Machine",
+difficulty:"Beginner",
+instructions:"Extend knees to raise weight."
+},
+
+{
+name:"Calf Raise",
+muscle:"Legs",
+equipment:"Machine",
+difficulty:"Beginner",
+instructions:"Raise heels as high as possible."
+},
+
+{
+name:"Shoulder Press",
+muscle:"Shoulders",
+equipment:"Barbell",
+difficulty:"Beginner",
+instructions:"Press weight overhead."
+},
+
+{
+name:"Dumbbell Press",
+muscle:"Shoulders",
+equipment:"Dumbbells",
+difficulty:"Beginner",
+instructions:"Press dumbbells overhead."
+},
+
+{
+name:"Arnold Press",
+muscle:"Shoulders",
+equipment:"Dumbbells",
+difficulty:"Intermediate",
+instructions:"Rotate dumbbells while pressing."
+},
+
+{
+name:"Lateral Raise",
+muscle:"Shoulders",
+equipment:"Dumbbells",
+difficulty:"Beginner",
+instructions:"Raise arms to shoulder height."
+},
+
+{
+name:"Front Raise",
+muscle:"Shoulders",
+equipment:"Dumbbells",
+difficulty:"Beginner",
+instructions:"Raise arms in front."
+},
+
+{
+name:"Reverse Fly",
+muscle:"Shoulders",
+equipment:"Dumbbells",
+difficulty:"Beginner",
+instructions:"Pull arms apart behind body."
+},
+
+{
+name:"Barbell Curl",
+muscle:"Biceps",
+equipment:"Barbell",
+difficulty:"Beginner",
+instructions:"Curl weight to shoulders."
+},
+
+{
+name:"Dumbbell Curl",
+muscle:"Biceps",
+equipment:"Dumbbells",
+difficulty:"Beginner",
+instructions:"Curl dumbbells upward."
+},
+
+{
+name:"Hammer Curl",
+muscle:"Biceps",
+equipment:"Dumbbells",
+difficulty:"Beginner",
+instructions:"Curl with neutral grip."
+},
+
+{
+name:"Preacher Curl",
+muscle:"Biceps",
+equipment:"Bench",
+difficulty:"Intermediate",
+instructions:"Curl on preacher bench."
+},
+
+{
+name:"Cable Curl",
+muscle:"Biceps",
+equipment:"Cable Machine",
+difficulty:"Beginner",
+instructions:"Curl cable attachment upward."
+},
+
+{
+name:"Tricep Pushdown",
+muscle:"Triceps",
+equipment:"Cable Machine",
+difficulty:"Beginner",
+instructions:"Push rope downward."
+},
+
+{
+name:"Skull Crusher",
+muscle:"Triceps",
+equipment:"EZ Bar",
+difficulty:"Intermediate",
+instructions:"Lower bar toward forehead."
+},
+
+{
+name:"Overhead Extension",
+muscle:"Triceps",
+equipment:"Dumbbell",
+difficulty:"Beginner",
+instructions:"Extend arm overhead."
+},
+
+{
+name:"Close Grip Bench Press",
+muscle:"Triceps",
+equipment:"Barbell",
+difficulty:"Intermediate",
+instructions:"Press using narrow grip."
+},
+
+{
+name:"Dips",
+muscle:"Triceps",
+equipment:"Dip Station",
+difficulty:"Intermediate",
+instructions:"Lower body and press upward."
+}
+
+];
+
+displayExercises();
+
+function displayExercises(){
+
+    let html = "";
+
+    exercises.forEach(exercise => {
+
+        html += `
+
+        <div class="catalog-card"
+             onclick="showDetails('${exercise.name}')">
+
+            <h3>${exercise.name}</h3>
+
+            <p>${exercise.muscle}</p>
+
+        </div>
+
+        `;
+    });
+
+    document.getElementById(
+        "exerciseList"
+    ).innerHTML = html;
+}
+
+function showDetails(name){
+
+    const exercise =
+        exercises.find(
+            e => e.name === name
+        );
+
+    document.getElementById(
+        "exerciseDetails"
+    ).innerHTML =
+
+    `
+    <h2>${exercise.name}</h2>
+
+    <p>
+        <strong>Muscle Group:</strong>
+        ${exercise.muscle}
+    </p>
+
+    <p>
+        <strong>Equipment:</strong>
+        ${exercise.equipment}
+    </p>
+
+    <p>
+        <strong>Difficulty:</strong>
+        ${exercise.difficulty}
+    </p>
+
+    <p>
+        <strong>Instructions:</strong>
+        ${exercise.instructions}
+    </p>
+    `;
+}
+
+function searchExercises(){
+
+    const text =
+        document.getElementById(
+            "searchBox"
+        ).value.toLowerCase();
+
+    let html = "";
+
+    exercises
+    .filter(exercise =>
+        exercise.name
+        .toLowerCase()
+        .includes(text)
+    )
+
+    .forEach(exercise => {
+
+        html += `
+
+        <div class="catalog-card"
+             onclick="showDetails('${exercise.name}')">
+
+            <h3>${exercise.name}</h3>
+
+            <p>${exercise.muscle}</p>
+
+        </div>
+
+        `;
+    });
+
+    document.getElementById(
+        "exerciseList"
+    ).innerHTML = html;
+}
+
+</script>
+
+</body>
+
+</html>

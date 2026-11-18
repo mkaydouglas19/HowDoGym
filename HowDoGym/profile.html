@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Profile</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        HOW DO GYM?
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="workout.html">Workout</a></li>
+        <li><a href="tracking.html">Track</a></li>
+        <li><a href="catalog.html">Catalog</a></li>
+    </ul>
+
+</nav>
+
+<section class="survey-container">
+
+    <h1>My Profile</h1>
+
+    <div class="profile-grid">
+
+        <div class="card">
+            <h2>User Information</h2>
+
+            <p><strong>Name:</strong> <span id="name"></span></p>
+
+            <p><strong>Goal:</strong> <span id="goal"></span></p>
+
+            <p><strong>Experience:</strong> <span id="experience"></span></p>
+
+            <p><strong>Training Days:</strong> <span id="days"></span></p>
+
+            <p><strong>Equipment:</strong> <span id="equipment"></span></p>
+        </div>
+
+        <div class="card">
+            <h2>Workout Statistics</h2>
+
+            <p>
+                Total Workouts Logged:
+                <span id="totalWorkouts">0</span>
+            </p>
+
+            <p>
+                Total Sets Logged:
+                <span id="totalSets">0</span>
+            </p>
+
+            <p>
+                Exercises Tracked:
+                <span id="exerciseCount">0</span>
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>Personal Records</h2>
+
+            <div id="prContainer">
+                No workout data yet.
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Progress Summary</h2>
+
+            <div id="summary">
+                Complete workouts to see progress.
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+const name =
+    localStorage.getItem("name") || "Not Set";
+
+const goal =
+    localStorage.getItem("goal") || "Not Set";
+
+const experience =
+    localStorage.getItem("experience") || "Not Set";
+
+const days =
+    localStorage.getItem("days") || "Not Set";
+
+const equipment =
+    localStorage.getItem("equipment") || "Not Set";
+
+document.getElementById("name").innerText =
+    name;
+
+document.getElementById("goal").innerText =
+    goal;
+
+document.getElementById("experience").innerText =
+    experience;
+
+document.getElementById("days").innerText =
+    days;
+
+document.getElementById("equipment").innerText =
+    equipment;
+
+let history =
+    JSON.parse(
+        localStorage.getItem("history")
+    ) || [];
+
+document.getElementById(
+    "totalWorkouts"
+).innerText = history.length;
+
+document.getElementById(
+    "totalSets"
+).innerText = history.length;
+
+const uniqueExercises =
+    [...new Set(
+        history.map(
+            item => item.exercise
+        )
+    )];
+
+document.getElementById(
+    "exerciseCount"
+).innerText =
+    uniqueExercises.length;
+
+
+// Personal Records
+
+let prs = {};
+
+history.forEach(workout => {
+
+    if(
+        !prs[workout.exercise] ||
+        workout.weight >
+        prs[workout.exercise]
+    ){
+
+        prs[workout.exercise] =
+            workout.weight;
+    }
+
+});
+
+let prHTML = "";
+
+for(let exercise in prs){
+
+    prHTML += `
+
+    <div class="stat-item">
+
+        <strong>${exercise}</strong>
+
+        <br>
+
+        PR:
+        ${prs[exercise]} lbs
+
+    </div>
+
+    `;
+}
+
+if(prHTML === ""){
+
+    prHTML =
+    "No records yet. Log some workouts!";
+}
+
+document.getElementById(
+    "prContainer"
+).innerHTML = prHTML;
+
+
+// Progress Summary
+
+let summaryText = "";
+
+if(history.length === 0){
+
+    summaryText =
+    `
+    Start tracking workouts
+    to build a progress history.
+    `;
+}
+else{
+
+    summaryText =
+    `
+    Great work, ${name}!
+
+    You've logged
+    ${history.length}
+    workouts.
+
+    Keep progressing by
+    following your routine
+    and increasing weights
+    over time.
+    `;
+}
+
+document.getElementById(
+    "summary"
+).innerHTML =
+    summaryText;
+
+</script>
+
+</body>
+
+</html>

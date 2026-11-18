@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Fitness Survey</title>
+
+    <link rel="stylesheet" href="style.css"></head>
+
+<body>
+
+<nav>
+    <div class="logo">
+        HOW DO GYM?
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="catalog.html">Catalog</a></li>
+    </ul>
+</nav>
+
+<section class="survey-container">
+
+    <h1>Create My Workout Plan</h1>
+
+    <div class="card">
+
+        <label>Name</label>
+        <input
+            type="text"
+            id="name"
+            placeholder="Enter your name">
+
+        <label>Fitness Goal</label>
+
+        <select id="goal">
+            <option value="muscle">
+                Build Muscle
+            </option>
+
+            <option value="strength">
+                Gain Strength
+            </option>
+
+            <option value="fatloss">
+                Lose Weight
+            </option>
+        </select>
+
+        <label>Experience Level</label>
+
+        <select id="experience">
+            <option value="beginner">
+                Beginner
+            </option>
+
+            <option value="intermediate">
+                Intermediate
+            </option>
+        </select>
+
+        <label>Workout Days Per Week</label>
+
+        <select id="days">
+
+            <option value="3">
+                3 Days
+            </option>
+
+            <option value="4">
+                4 Days
+            </option>
+
+            <option value="5">
+                5 Days
+            </option>
+
+            <option value="6">
+                6 Days
+            </option>
+
+        </select>
+
+        <label>Available Equipment</label>
+
+        <select id="equipment">
+
+            <option value="fullgym">
+                Full Gym
+            </option>
+
+            <option value="dumbbells">
+                Dumbbells Only
+            </option>
+
+            <option value="homegym">
+                Home Gym
+            </option>
+
+        </select>
+
+        <button
+            class="primary-btn"
+            onclick="saveSurvey()">
+
+            Generate My Program
+
+        </button>
+
+    </div>
+
+</section>
+
+<script>
+
+function saveSurvey() {
+
+    const name =
+        document.getElementById("name").value;
+
+    const goal =
+        document.getElementById("goal").value;
+
+    const experience =
+        document.getElementById("experience").value;
+
+    const days =
+        document.getElementById("days").value;
+
+    const equipment =
+        document.getElementById("equipment").value;
+
+    localStorage.setItem(
+        "name",
+        name
+    );
+
+    localStorage.setItem(
+        "goal",
+        goal
+    );
+
+    localStorage.setItem(
+        "experience",
+        experience
+    );
+
+    localStorage.setItem(
+        "days",
+        days
+    );
+
+    localStorage.setItem(
+        "equipment",
+        equipment
+    );
+
+    window.location.href =
+        "workout.html";
+}
+
+</script>
+
+</body>
+
+</html>
